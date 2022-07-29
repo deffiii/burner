@@ -14,7 +14,7 @@ import useElementSize from "@src/hooks/useElementSize";
 import JewDancing from "@screens/Game/JewDancing";
 import { Row } from "@src/components/Flex";
 import useWindowSize from "@src/hooks/useWindowSize";
-
+//
 interface IProps {}
 
 const Root = styled.div`
