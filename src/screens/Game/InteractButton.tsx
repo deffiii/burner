@@ -52,11 +52,11 @@ const InteractButton = () => {
       </Button>
     );
   } else {
-    return (
+    return !vm.isTimeOver ? (
       <Button disabled={vm.loading} onClick={burn}>
         🔥 Burn
       </Button>
-    );
+    ) : null;
   }
 };
 

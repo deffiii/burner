@@ -31,7 +31,9 @@ export interface IFurnace {
   publicKey: PublicKey;
 }
 
-export const REWARD_AMOUNT = new BN(500).mul(
+export const LIFETIME = 5;
+export const REWARD_AMOUNT_UNITS = 500;
+export const REWARD_AMOUNT = new BN(REWARD_AMOUNT_UNITS).mul(
   new BN(10).pow(new BN(TOKENS_BY_SYMBOL.USDT.decimals))
 );
 
@@ -111,7 +113,7 @@ class DappStore {
     // );
 
     const lifetime = new BN(
-      (5 * 60 * 1000) / SLOT_TIME[this.rootStore.accountStore.network]
+      (LIFETIME * 60 * 1000) / SLOT_TIME[this.rootStore.accountStore.network]
     );
 
     await program.methods

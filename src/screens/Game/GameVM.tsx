@@ -65,7 +65,7 @@ class GameVM {
     this.rootStore = rootStore;
     this.furnaceAddress = furnaceAddress;
     makeAutoObservable(this);
-    setInterval(this.fetchFurnace, 5 * 1000);
+    setInterval(this.fetchFurnace, 10 * 1000);
     when(() => rootStore.accountStore.provider != null, this.fetchFurnace);
   }
 

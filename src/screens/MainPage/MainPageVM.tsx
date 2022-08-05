@@ -5,7 +5,7 @@ import { RootStore, useStores } from "@stores";
 import { PublicKey } from "@solana/web3.js";
 import { DAPP, IDL } from "@src/types";
 import { Program } from "@project-serum/anchor";
-import { IFurnace, IRawState, REWARD_AMOUNT } from "@stores/DappStore";
+import { IFurnace, IRawState, REWARD_AMOUNT_UNITS } from "@stores/DappStore";
 
 const ctx = React.createContext<MainPageVM | null>(null);
 
@@ -58,7 +58,7 @@ class MainPageVM {
       })
     );
     const sorted = furnaces
-      .filter((f) => f.account.rewardAmount === REWARD_AMOUNT.toNumber())
+      .filter((f) => f.account.rewardAmount === REWARD_AMOUNT_UNITS)
       .sort(({ account: accA }, { account: accB }) => {
         if (accA.finishDate == null && accB.finishDate == null) return 0;
         if (accA.finishDate != null && accB.finishDate == null) return 1;
