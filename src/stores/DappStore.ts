@@ -1,6 +1,5 @@
 import RootStore from "@stores/RootStore";
 import { makeAutoObservable } from "mobx";
-import { BN } from "@project-serum/anchor";
 import { IToken, TOKENS_BY_ASSET_ID, TOKENS_BY_SYMBOL } from "@src/tokens";
 // import { SLOT_TIME } from "@stores/AccountStore";
 import nodeRequest from "@src/utils/nodeRequest";
@@ -16,16 +15,9 @@ export interface IFurnaceState {
   lifetime: number;
   rewardAmount: number;
   // rewardAssetId: string;
-  lastBurnDate?: Dayjs;
   finishDate?: Dayjs;
   rewardToken?: IToken;
 }
-
-export const LIFETIME = 5;
-export const REWARD_AMOUNT_UNITS = 500;
-export const REWARD_AMOUNT = new BN(REWARD_AMOUNT_UNITS).mul(
-  new BN(10).pow(new BN(TOKENS_BY_SYMBOL.USDT.decimals))
-);
 
 const getValueByKey = <T>(
   data: Array<{ key: string; value: string | number | boolean }>,
@@ -50,6 +42,7 @@ class DappStore {
 
   sameBlock: boolean = false;
   setSameBlock = (v: boolean) => (this.sameBlock = v);
+
   checkIfSameBlock = async () => {
     const { furnace } = this;
     if (furnace?.lastBurn == null) {
@@ -74,21 +67,20 @@ class DappStore {
     const lifetime = getValueByKey<number>(data, `furnace_${id}_lifetime`);
     const rewardAmount = getValueByKey(data, `furnace_${id}_rewardAmount`);
     const rewardAssetId = getValueByKey(data, `furnace_${id}_rewardAssetId`);
-    let lastBurnDate;
-    let finishDate;
-    let lastBurnBlockId;
-    if (lastBurn != null) {
-      const req = `/blocks/at/${lastBurn}`;
-      const { timestamp, id: blockId } = await nodeRequest(req);
-      lastBurnBlockId = blockId;
-      lastBurnDate = dayjs(timestamp);
-    }
-    if (lastBurnDate != null && lifetime != null && lastBurnBlockId) {
-      const req = `/blocks/delay/${lastBurnBlockId}/${lifetime}`;
-      const { delay } = await nodeRequest(req);
-      finishDate = lastBurnDate.add(lifetime * delay, "milliseconds");
-    }
-    this.setFurnace({
+    const { height } = await nodeRequest("/blocks/height");
+    const lastBlock = await nodeRequest("/blocks/last");
+    const { delay } = await nodeRequest(`/blocks/delay/${lastBlock.id}/1500`);
+    const blocksBeforeEnd =
+      lastBurn != null ? lastBurn + lifetime! - height : null;
+    const finishDate =
+      blocksBeforeEnd != null
+        ? dayjs(lastBlock.timestamp).add(
+            blocksBeforeEnd * delay,
+            "milliseconds"
+          )
+        : undefined;
+
+    const furnace = {
       id,
       finished,
       lastBurn,
@@ -96,9 +88,9 @@ class DappStore {
       lifetime: lifetime as number,
       rewardAmount: rewardAmount as number,
       rewardToken: TOKENS_BY_ASSET_ID[rewardAssetId as string],
-      lastBurnDate,
       finishDate,
-    });
+    };
+    this.setFurnace(furnace);
   };
 
   get isLeader() {

@@ -9,11 +9,6 @@ import { autorun } from "mobx";
 import { storesContext } from "@stores/useStores";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from "@solana/wallet-adapter-react";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import "react-toastify/dist/ReactToastify.css";
 
 import dayjs from "dayjs";

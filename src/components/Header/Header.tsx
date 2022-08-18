@@ -3,12 +3,8 @@ import React, { useState } from "react";
 import Banner from "./Banner";
 import { Column, Row } from "@components/Flex";
 import { observer } from "mobx-react-lite";
-import { useLocation } from "react-router-dom";
 import logo from "@assets/icons/logo.svg";
-import { useStores } from "@stores";
-import centerEllipsis from "@src/utils/centerEllipsis";
-import Button from "@components/Button";
-import { LOGIN_TYPE } from "@stores/AccountStore";
+import Wallet from "@components/Wallet";
 
 interface IProps {}
 
@@ -58,9 +54,7 @@ const TopMenu = styled.header`
   }
 `;
 
-//todo add signer login
 const Header: React.FC<IProps> = () => {
-  const { accountStore } = useStores();
   const [bannerClosed, setBannerClosed] = useState(false);
 
   return (
@@ -73,22 +67,23 @@ const Header: React.FC<IProps> = () => {
             <img className="logo" src={logo} alt="logo" />
           </a>
         </Row>
-        {accountStore.address != null ? (
-          <Button
-            size="medium"
-            onClick={accountStore.logout}
-            style={{ fontWeight: "600" }}
-          >
-            {centerEllipsis(accountStore.address, 8)}
-          </Button>
-        ) : (
-          <Button
-            size="medium"
-            onClick={() => accountStore.login(LOGIN_TYPE.KEEPER)}
-          >
-            Connect wallet
-          </Button>
-        )}
+        <Wallet />
+        {/*{accountStore.address != null ? (*/}
+        {/*  <Button*/}
+        {/*    size="medium"*/}
+        {/*    onClick={accountStore.logout}*/}
+        {/*    style={{ fontWeight: "600" }}*/}
+        {/*  >*/}
+        {/*    {centerEllipsis(accountStore.address, 8)}*/}
+        {/*  </Button>*/}
+        {/*) : (*/}
+        {/*  <Button*/}
+        {/*    size="medium"*/}
+        {/*    onClick={() => accountStore.login(LOGIN_TYPE.KEEPER)}*/}
+        {/*  >*/}
+        {/*    Connect wallet*/}
+        {/*  </Button>*/}
+        {/*)}*/}
       </TopMenu>
     </Root>
   );

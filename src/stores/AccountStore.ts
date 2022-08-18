@@ -59,7 +59,11 @@ class AccountStore {
     }
     this.fetchNaziBalance().finally(() => this.setBalanceLoading(false));
     setInterval(this.fetchNaziBalance, 30 * 1000);
+    setInterval(this.checkScriptedAccount, 30 * 1000);
   }
+
+  loginModalOpened: boolean = false;
+  setLoginModalOpened = (state: boolean) => (this.loginModalOpened = state);
 
   balances: Record<string, BN> = {};
   setBalances = (v: Record<string, BN>) => (this.balances = v);
@@ -129,20 +133,21 @@ class AccountStore {
 
   login = async (loginType: LOGIN_TYPE) => {
     this.setLoginType(loginType);
+    const signer = new Signer({ NODE_URL: NODE_URL });
     switch (loginType) {
       case LOGIN_TYPE.KEEPER:
-        this.setSigner(new Signer());
+        this.setSigner(signer);
         await this.setupSynchronizationWithKeeper();
         // const authData = { data: "you know what is the main reason" };
         // await this.signer?.setProvider(new ProviderKeeper(authData));
         await this.signer?.setProvider(new ProviderKeeper());
         break;
       case LOGIN_TYPE.SIGNER_EMAIL:
-        this.setSigner(new Signer());
+        this.setSigner(signer);
         await this.signer?.setProvider(new ProviderCloud());
         break;
       case LOGIN_TYPE.SIGNER_SEED:
-        this.setSigner(new Signer({ NODE_URL: NODE_URL }));
+        this.setSigner(signer);
         const provider = new ProviderWeb("https://waves.exchange/signer/");
         await this.signer?.setProvider(provider);
         break;
@@ -185,98 +190,6 @@ class AccountStore {
     address: this.address,
     loginType: this.loginType,
   });
-
-  // updateAccountAssets = async (force = false) => {
-  //   if (this.address == null) {
-  //     this.setAssetBalances([]);
-  //     return;
-  //   }
-  //   if (!force && this.assetsBalancesLoading) return;
-  //   this.setAssetsBalancesLoading(true);
-  //
-  //   const address = this.address;
-  //   const data = await nodeService.getAddressBalances(address);
-  //   const assetBalances = TOKENS_LIST.map((asset) => {
-  //     const t = data.find(({ assetId }) => asset.assetId === assetId);
-  //     const balance = new BN(t != null ? t.balance : 0);
-  //     const rate =
-  //       this.rootStore.poolsStore.usdnRate(asset.assetId, 1) ?? BN.ZERO;
-  //     const usdnEquivalent = rate
-  //       ? rate.times(BN.formatUnits(balance, asset.decimals))
-  //       : BN.ZERO;
-  //     return new Balance({ balance, usdnEquivalent, ...asset });
-  //   });
-  //   const newAddress = this.address;
-  //   if (address !== newAddress) return;
-  //
-  //   this.setAssetBalances(assetBalances);
-  //   this.setAssetsBalancesLoading(false);
-  // };
-
-  ///------------------transfer
-  // public transfer = async (trParams: ITransferParams) =>
-  //   this.loginType === LOGIN_TYPE.KEEPER
-  //     ? this.transferWithKeeper(trParams)
-  //     : this.transferWithSigner(trParams);
-  //
-  // private transferWithSigner = async (
-  //   data: ITransferParams
-  // ): Promise<string | null> => {
-  //   if (this.signer == null) {
-  //     await this.login(this.loginType ?? LOGIN_TYPE.SIGNER_EMAIL);
-  //   }
-  //   if (this.signer == null) {
-  //     this.rootStore.notificationStore.notify("You need to login firstly", {
-  //       title: "Error",
-  //       type: "error",
-  //     });
-  //     return null;
-  //   }
-  //   try {
-  //     const ttx = this.signer.transfer({
-  //       ...data,
-  //       fee: this.isAccScripted ? 500000 : 100000,
-  //     });
-  //     const txId = await ttx.broadcast().then((tx: any) => tx.id);
-  //     await waitForTx(txId, {
-  //       apiBase: NODE_URL,
-  //     });
-  //     return txId;
-  //   } catch (e: any) {
-  //     console.warn(e);
-  //     this.rootStore.notificationStore.notify(e.toString(), {
-  //       type: "error",
-  //       title: "Transaction is not completed",
-  //     });
-  //     return null;
-  //   }
-  // };
-  //
-  // private transferWithKeeper = async (
-  //   data: ITransferParams
-  // ): Promise<string | null> => {
-  //   const tokenAmount = BN.formatUnits(
-  //     data.amount,
-  //     this.assetToSend?.decimals
-  //   ).toString();
-  //   const tx = await (window as any).WavesKeeper.signAndPublishTransaction({
-  //     type: 4,
-  //     data: {
-  //       amount: { tokens: tokenAmount, assetId: data.assetId },
-  //       fee: {
-  //         tokens: this.isAccScripted ? "0.005" : "0.001",
-  //         assetId: "WAVES",
-  //       },
-  //       recipient: data.recipient,
-  //     },
-  //   } as any);
-  //
-  //   const txId = JSON.parse(tx).id;
-  //   await waitForTx(txId, {
-  //     apiBase: NODE_URL,
-  //   });
-  //   return txId;
-  // };
 
   ///////////------------invoke
 
