@@ -1,7 +1,7 @@
 export const EXPLORER_URL = "https://new.wavesexplorer.com";
 
 export const DAPP_ADDRESS = "3MxbD7vwyGjwsRxT8fmMB9fngo59VfHcrea";
-
+export const NAZI_MINT_ADDRESS = "3MxZPzVdHQYNjp99N7VRuR4RLmJUqnDg9ok";
 export const NODES = [
   "https://nodes-testnet.wavesnodes.com",
   // "https://nodes-puzzle.wavesnodes.com",

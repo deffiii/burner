@@ -3,9 +3,10 @@ import { makeAutoObservable } from "mobx";
 import { IToken, TOKENS_BY_ASSET_ID, TOKENS_BY_SYMBOL } from "@src/tokens";
 // import { SLOT_TIME } from "@stores/AccountStore";
 import nodeRequest from "@src/utils/nodeRequest";
-import { DAPP_ADDRESS } from "@src/constants";
+import { DAPP_ADDRESS, NAZI_MINT_ADDRESS } from "@src/constants";
 import dayjs, { Dayjs } from "dayjs";
 import { Undefinable } from "tsdef";
+import { toast } from "react-toastify";
 
 export interface IFurnaceState {
   id: string;
@@ -135,6 +136,16 @@ class DappStore {
       },
     });
     await this.fetchFurnace();
+  };
+
+  mintNazi = async () => {
+    const txId = await this.rootStore.accountStore.invoke({
+      dApp: NAZI_MINT_ADDRESS,
+      payment: [{ assetId: TOKENS_BY_SYMBOL.USDT.assetId, amount: "5000000" }],
+      call: { function: "mintNazi", args: [{ type: "integer", value: "1" }] },
+    });
+    await this.rootStore.accountStore.fetchNaziBalance();
+    toast.success(txId);
   };
 
   sync = () => Promise.all([this.checkIfSameBlock(), this.fetchFurnace()]);

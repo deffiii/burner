@@ -82,10 +82,7 @@ const HappyJew: React.FC<IProps> = () => {
         )}
         <SizedBox height={24} />
         {furnace != null && (
-          <Button
-            size="big"
-            onClick={() => navigate(ROUTES.GAME.replace(":id", furnace.id))}
-          >
+          <Button size="big" onClick={() => navigate(ROUTES.GAME)}>
             🔥 Play now
           </Button>
         )}

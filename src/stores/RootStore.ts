@@ -8,7 +8,7 @@ export interface ISerializedRootStore {
 
 export enum ROUTES {
   ROOT = "/",
-  GAME = "/game/:id",
+  GAME = "/game",
   INIT = "/INIT",
 }
 

@@ -12,11 +12,10 @@ import n5 from "@src/assets/n5.png";
 import useWindowSize from "@src/hooks/useWindowSize";
 import useElementSize from "@src/hooks/useElementSize";
 import { observer } from "mobx-react-lite";
-import { Anchor } from "@components/Anchor";
 import clock from "@src/assets/icons/clock.svg";
 import CustomCountdown from "@components/CustomCountdown";
 import dayjs from "dayjs";
-import { TICKETS_MINT_URL } from "@stores/RootStore";
+import { useStores } from "@stores";
 
 interface IProps {}
 
@@ -95,6 +94,7 @@ const Block = styled.div`
   }
 `;
 const NaziCards: React.FC<IProps> = () => {
+  const { dappStore } = useStores();
   const { width: windowWidth } = useWindowSize();
   const [squareRef, { width }] = useElementSize();
   const cards = [
@@ -109,7 +109,7 @@ const NaziCards: React.FC<IProps> = () => {
       <Block>
         <Layout>
           <Column crossAxisSize="max" mainAxisSize="stretch">
-            <Title weight={600}>{`Get the nazis to burn\n them all!`}</Title>
+            <Title weight={600}>{`Buy $NAZI for 5 USDT`}</Title>
             <SizedBox height={6} />
           </Column>
         </Layout>
@@ -164,11 +164,13 @@ const NaziCards: React.FC<IProps> = () => {
             <Text size="medium">Untill the draw</Text>
           </Row>
           <SizedBox height={24} />
-          <Anchor style={{ width: "100%" }} href={TICKETS_MINT_URL}>
-            <Button style={{ width: "100%" }} size="big">
-              Get tickets 🔥
-            </Button>
-          </Anchor>
+          <Button
+            style={{ width: "100%" }}
+            size="big"
+            onClick={dappStore.mintNazi}
+          >
+            Buy $NAZI
+          </Button>
         </Column>
       </Layout>
     </Root>

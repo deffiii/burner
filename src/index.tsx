@@ -7,7 +7,7 @@ import { loadState, saveState } from "@src/utils/localStorage";
 import { RootStore } from "@stores";
 import { autorun } from "mobx";
 import { storesContext } from "@stores/useStores";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -61,18 +61,7 @@ root.render(
   <React.StrictMode>
     <storesContext.Provider value={mobxStore}>
       <Router>
-        {/*<ConnectionProvider*/}
-        {/*  endpoint={mobxStore.accountStore.solanaWeb3Manager.endpoint}*/}
-        {/*>*/}
-        {/*  <WalletProvider*/}
-        {/*    wallets={mobxStore.accountStore.solanaWeb3Manager.wallets}*/}
-        {/*    autoConnect*/}
-        {/*  >*/}
-        {/*    <WalletModalProvider>*/}
         <App />
-        {/*</WalletModalProvider>*/}
-        {/*</WalletProvider>*/}
-        {/*</ConnectionProvider>*/}
       </Router>
     </storesContext.Provider>
   </React.StrictMode>
