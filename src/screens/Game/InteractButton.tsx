@@ -1,5 +1,4 @@
 import React from "react";
-import { useGameVM } from "@screens/Game/GameVM";
 import { useStores } from "@stores";
 import styled from "@emotion/styled";
 import { observer } from "mobx-react-lite";
@@ -22,39 +21,41 @@ const Button = styled.button`
 `;
 
 const InteractButton = () => {
-  const vm = useGameVM();
-  const { accountStore } = useStores();
-
+  const { accountStore, dappStore } = useStores();
+  const furnace = dappStore.furnace;
   const balance: number | null =
     accountStore.balances[TOKENS_BY_SYMBOL.NAZI.assetId]?.toNumber();
   const burn = () => {
-    vm.setBurnLoading(true);
-    vm.burn()
+    dappStore.setBurnLoading(true);
+    dappStore
+      .burn()
       .catch((e) => toast.error(e.message ?? e.toString()))
-      .finally(() => vm.setBurnLoading(false));
+      .finally(() => dappStore.setBurnLoading(false));
   };
   const claim = () => {
-    vm.setClaimLoading(true);
-    vm.claim()
+    dappStore.setClaimLoading(true);
+    dappStore
+      .claim()
       .catch((e) => toast.error(e.message ?? e.toString()))
-      .finally(() => vm.setClaimLoading(false));
+      .finally(() => dappStore.setClaimLoading(false));
   };
 
-  if (vm.state == null || vm.state.rewardAmount <= 0 || balance === 0)
-    return null;
-  if (vm.loading || accountStore.loading || accountStore.balanceLoading) {
+  if (furnace == null || furnace.finished || balance === 0) return null;
+  if (dappStore.loading || accountStore.balanceLoading) {
     return <Button disabled>Loading...</Button>;
   }
-  if (vm.isTimeOver && vm.isLeader) {
+  if (dappStore.isTimeOver && dappStore.isLeader) {
     return (
-      <Button disabled={vm.loading} onClick={claim}>
+      <Button disabled={dappStore.loading} onClick={claim}>
         💰 Claim reward
       </Button>
     );
+  } else if (dappStore.sameBlock) {
+    return <Button disabled>⏳ You should wait for next block</Button>;
   } else {
-    return !vm.isTimeOver ? (
-      <Button disabled={vm.loading} onClick={burn}>
-        🔥 Burn
+    return !dappStore.isTimeOver ? (
+      <Button disabled={dappStore.loading} onClick={burn}>
+        {furnace.lastBurn == null ? "🔥 Burn first" : "🔥 Burn"}
       </Button>
     ) : null;
   }

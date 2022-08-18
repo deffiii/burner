@@ -7,11 +7,11 @@ import clock from "@src/assets/icons/clock.svg";
 import leader from "@src/assets/icons/leader.svg";
 import coins from "@src/assets/icons/coins.svg";
 import { observer } from "mobx-react-lite";
-import { useGameVM } from "@screens/Game/GameVM";
-import { TOKENS_BY_ASSET_ID } from "@src/tokens";
 import centerEllipsis from "@src/utils/centerEllipsis";
 import JewDancing from "@screens/Game/JewDancing";
 import CustomCountdown from "@components/CustomCountdown";
+import { useStores } from "@stores";
+import BN from "@src/utils/BN";
 
 interface IProps {}
 
@@ -88,19 +88,22 @@ const Reward = styled(Address)`
 `;
 
 const LeaderCard: React.FC<IProps> = () => {
-  const vm = useGameVM();
-  if (vm.state == null) return null;
-  const rewardTok = TOKENS_BY_ASSET_ID[vm.state.rewardMint.toString()];
-  const amount = vm.state.rewardAmount; //* Math.pow(10, -rewardTok.decimals);
+  const { dappStore } = useStores();
+  const { furnace } = dappStore;
+  const rewardTok = dappStore.furnace?.rewardToken;
+  const amount = BN.formatUnits(
+    furnace?.rewardAmount ?? 0,
+    furnace?.rewardToken?.decimals
+  ).toFormat(0);
   return (
     <Root>
       <Details>
         <Column>
           <Time>
-            {vm.state.finishDate && vm.state.lastBurn.toNumber() > 0 ? (
-              <CustomCountdown date={vm.state.finishDate?.toDate()} />
+            {furnace?.finishDate && furnace.lastBurn != null ? (
+              <CustomCountdown date={furnace.finishDate.toDate()} />
             ) : (
-              "–"
+              "Not started"
             )}
           </Time>
           <SizedBox height={8} />
@@ -115,27 +118,26 @@ const LeaderCard: React.FC<IProps> = () => {
         <SizedBox height={34} />
         <Column>
           <Address weight={600}>
-            {vm.state.lastStoker.toString() ===
-            "11111111111111111111111111111111"
+            {furnace?.lastStoker == null
               ? "–"
-              : centerEllipsis(vm.state.lastStoker.toString(), 6)}
+              : centerEllipsis(furnace.lastStoker.toString(), 6)}
           </Address>
           <Row alignItems="center">
             <img src={leader} alt="leader" />
             <SizedBox width={8} />
             <Text weight={600} size="medium">
               Leader&nbsp;
-              {vm.isLeader && " (You 🎖)"}
+              {dappStore.isLeader && " (You 🎖)"}
             </Text>
           </Row>
         </Column>
       </Details>
       <Dancing>
-        {vm.isTimeOver && vm.isLeader && vm.state.rewardAmount > 0 && (
+        {dappStore.isTimeOver && dappStore.isLeader && (
           <Reward weight={600}>YOU WON</Reward>
         )}
         <Reward weight={600}>
-          {amount} {rewardTok.symbol}
+          {amount} {rewardTok?.symbol}
         </Reward>
         <Row alignItems="center">
           <img src={coins} alt="leader" />

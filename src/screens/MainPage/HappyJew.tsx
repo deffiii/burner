@@ -8,7 +8,8 @@ import jew from "@src/assets/jew1.png";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@stores/RootStore";
-import { useMainPageVM } from "@screens/MainPage/MainPageVM";
+import { useStores } from "@stores";
+import BN from "@src/utils/BN";
 
 interface IProps {}
 
@@ -62,19 +63,28 @@ const Block = styled(Column)`
   }
 `;
 const HappyJew: React.FC<IProps> = () => {
-  const vm = useMainPageVM();
+  const { dappStore } = useStores();
+  const { furnace } = dappStore;
   const navigate = useNavigate();
-  const furnace =
-    vm.furnaces.length > 0 ? vm.furnaces[0].publicKey.toString() : null;
   return (
     <Root>
       <Block>
-        <Title weight={600}>500 USDT Prize.</Title>
+        {furnace && furnace.rewardToken ? (
+          <Title weight={600}>
+            {BN.formatUnits(
+              furnace.rewardAmount,
+              furnace.rewardToken.decimals
+            ).toFormat(0)}{" "}
+            {furnace.rewardToken.symbol} Prize.
+          </Title>
+        ) : (
+          <Title weight={600}>Loading....</Title>
+        )}
         <SizedBox height={24} />
         {furnace != null && (
           <Button
             size="big"
-            onClick={() => navigate(ROUTES.GAME.replace(":id", furnace))}
+            onClick={() => navigate(ROUTES.GAME.replace(":id", furnace.id))}
           >
             🔥 Play now
           </Button>

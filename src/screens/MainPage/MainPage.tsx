@@ -5,8 +5,6 @@ import SizedBox from "@components/SizedBox";
 import NaziCards from "@screens/MainPage/NaziCards";
 import Rules from "./Rules";
 import Footer from "@screens/MainPage/Footer";
-import EventsTable from "@screens/MainPage/EventsTable";
-import { MainPageVMProvider } from "@screens/MainPage/MainPageVM";
 
 interface IProps {}
 
@@ -27,21 +25,17 @@ const Layout = styled.div`
 
 const MainPage: React.FC<IProps> = () => {
   return (
-    <MainPageVMProvider>
-      <Root>
-        <Layout>
-          <HappyJew />
-          <SizedBox height={48} />
-          <NaziCards />
-          <SizedBox height={48} />
-          <Rules />
-          <SizedBox height={48} />
-          <EventsTable />
-          <SizedBox height={144} />
-        </Layout>
-        <Footer />
-      </Root>
-    </MainPageVMProvider>
+    <Root>
+      <Layout>
+        <HappyJew />
+        <SizedBox height={48} />
+        <NaziCards />
+        <SizedBox height={48} />
+        <Rules />
+        <SizedBox height={144} />
+      </Layout>
+      <Footer />
+    </Root>
   );
 };
 export default MainPage;

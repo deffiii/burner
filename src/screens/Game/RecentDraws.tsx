@@ -14,7 +14,6 @@ import InteractButton from "@screens/Game/InteractButton";
 import CoalCard from "@screens/Game/CoalCard";
 import Spinner from "@components/Spinner";
 import Button from "@components/Button";
-import { useGameVM } from "@screens/Game/GameVM";
 import { Anchor } from "@components/Anchor";
 import { TICKETS_MINT_URL } from "@stores/RootStore";
 
@@ -42,8 +41,7 @@ const Container = styled.div`
 const naziIcons = [s5, s4, s3, s2, s1];
 
 const RecentDraws: React.FC<IProps> = () => {
-  const { accountStore } = useStores();
-  const vm = useGameVM();
+  const { accountStore, dappStore } = useStores();
   const balance: number | null =
     accountStore.balances[TOKENS_BY_SYMBOL.NAZI.assetId]?.toNumber();
   const length = balance && balance > 5 ? 5 : balance;
@@ -69,7 +67,7 @@ const RecentDraws: React.FC<IProps> = () => {
               <CoalCard
                 key={index}
                 src={naziIcons[index % naziIcons.length]}
-                fire={index === length - 1 && vm.burnLoading}
+                fire={index === length - 1 && dappStore.burnLoading}
               />
             ))
             .reverse()}

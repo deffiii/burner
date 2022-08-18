@@ -66,18 +66,18 @@ root.render(
   <React.StrictMode>
     <storesContext.Provider value={mobxStore}>
       <Router>
-        <ConnectionProvider
-          endpoint={mobxStore.accountStore.solanaWeb3Manager.endpoint}
-        >
-          <WalletProvider
-            wallets={mobxStore.accountStore.solanaWeb3Manager.wallets}
-            autoConnect
-          >
-            <WalletModalProvider>
-              <App />
-            </WalletModalProvider>
-          </WalletProvider>
-        </ConnectionProvider>
+        {/*<ConnectionProvider*/}
+        {/*  endpoint={mobxStore.accountStore.solanaWeb3Manager.endpoint}*/}
+        {/*>*/}
+        {/*  <WalletProvider*/}
+        {/*    wallets={mobxStore.accountStore.solanaWeb3Manager.wallets}*/}
+        {/*    autoConnect*/}
+        {/*  >*/}
+        {/*    <WalletModalProvider>*/}
+        <App />
+        {/*</WalletModalProvider>*/}
+        {/*</WalletProvider>*/}
+        {/*</ConnectionProvider>*/}
       </Router>
     </storesContext.Provider>
   </React.StrictMode>

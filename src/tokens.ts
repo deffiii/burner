@@ -1,6 +1,6 @@
 import tokenList from "./tokens.json";
 
-interface IToken {
+export interface IToken {
   name: string;
   symbol: string;
   decimals: number;

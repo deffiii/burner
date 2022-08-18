@@ -8,7 +8,6 @@ import { ROUTES } from "@stores/RootStore";
 import MainPage from "@screens/MainPage";
 import Game from "@screens/Game";
 import SizedBox from "@components/SizedBox";
-import Init from "@screens/Init";
 import { ToastContainer } from "react-toastify";
 
 const Root = styled(Column)`
@@ -35,7 +34,6 @@ const App: FC = () => {
         <Routes>
           <Route path={ROUTES.ROOT} element={<MainPage />} />
           <Route path={ROUTES.GAME} element={<Game />} />
-          <Route path={ROUTES.INIT} element={<Init />} />
           <Route path="*" element={<Navigate to={ROUTES.ROOT} />} />
         </Routes>
       </Body>

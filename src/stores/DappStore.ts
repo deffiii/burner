@@ -1,34 +1,24 @@
 import RootStore from "@stores/RootStore";
 import { makeAutoObservable } from "mobx";
-import { BN, Program, web3 } from "@project-serum/anchor";
-import { DAPP, IDL } from "@src/types";
-import { PublicKey } from "@solana/web3.js";
-import { Dayjs } from "dayjs";
-import { getDateBySlot } from "@src/utils/getDateBySlot";
-import { TOKENS_BY_SYMBOL } from "@src/tokens";
-import { SLOT_TIME } from "@stores/AccountStore";
-import { getAssociatedTokenAddress } from "@solana/spl-token";
+import { BN } from "@project-serum/anchor";
+import { IToken, TOKENS_BY_ASSET_ID, TOKENS_BY_SYMBOL } from "@src/tokens";
+// import { SLOT_TIME } from "@stores/AccountStore";
+import nodeRequest from "@src/utils/nodeRequest";
+import { DAPP_ADDRESS } from "@src/constants";
+import dayjs, { Dayjs } from "dayjs";
+import { Undefinable } from "tsdef";
 
-export interface IRawState {
-  bump: number;
-  coalMint: PublicKey;
-  lastBurn: BN;
-  lastStoker: PublicKey;
-  lifetime: BN;
-  rewardMint: PublicKey;
-  rewardVaultBump: number;
-}
-
-export interface IState extends IRawState {
+export interface IFurnaceState {
+  id: string;
+  finished?: boolean;
+  lastBurn?: number;
+  lastStoker?: string;
+  lifetime: number;
   rewardAmount: number;
-  lastBurnDate: Dayjs | null;
-  finishDate: Dayjs | null;
-  interval: number;
-}
-
-export interface IFurnace {
-  account: IState;
-  publicKey: PublicKey;
+  // rewardAssetId: string;
+  lastBurnDate?: Dayjs;
+  finishDate?: Dayjs;
+  rewardToken?: IToken;
 }
 
 export const LIFETIME = 5;
@@ -37,105 +27,131 @@ export const REWARD_AMOUNT = new BN(REWARD_AMOUNT_UNITS).mul(
   new BN(10).pow(new BN(TOKENS_BY_SYMBOL.USDT.decimals))
 );
 
+const getValueByKey = <T>(
+  data: Array<{ key: string; value: string | number | boolean }>,
+  key: string
+): Undefinable<T> => data.find((v) => key === v.key)?.value as Undefinable<T>;
+
 class DappStore {
   readonly rootStore: RootStore;
 
-  getFurnaceState = async (furnace?: PublicKey, defaultState?: IRawState) => {
-    const programID = new PublicKey(DAPP);
-    const provider = this.rootStore.accountStore.provider;
-    const connection = this.rootStore.accountStore.solanaWeb3Manager.connection;
-    if (provider == null || furnace == null) return null;
+  furnace?: IFurnaceState;
+  setFurnace = (f: IFurnaceState) => (this.furnace = f);
 
-    const program = new Program(IDL, programID, provider);
-    const state =
-      defaultState == null
-        ? await program.account.furnace.fetch(furnace)
-        : defaultState;
-    const [rewardVault] = await web3.PublicKey.findProgramAddress(
-      [Buffer.from("reward_vault"), furnace.toBuffer()],
-      program.programId
-    );
-    const rewardAmount = await connection.getTokenAccountBalance(rewardVault);
+  claimLoading: boolean = false;
+  setClaimLoading = (v: boolean) => (this.claimLoading = v);
 
-    const { lifetime, lastBurn } = state;
-    const lastBurnDate = await getDateBySlot(connection, lastBurn).catch(
-      () => null
-    );
+  burnLoading: boolean = false;
+  setBurnLoading = (v: boolean) => (this.burnLoading = v);
 
-    const finishDate = await getDateBySlot(
-      connection,
-      lastBurn.add(lifetime)
-    ).catch(() =>
-      lastBurnDate?.add(
-        SLOT_TIME[this.rootStore.accountStore.network] * lifetime.toNumber(),
-        "milliseconds"
-      )
-    );
+  get loading() {
+    return this.claimLoading || this.burnLoading;
+  }
 
-    return {
-      ...state,
-      rewardAmount: rewardAmount.value.uiAmount ?? 0,
-      lastBurnDate: lastBurnDate ?? null,
-      finishDate: finishDate ?? null,
-      interval: finishDate?.diff(lastBurnDate, "milliseconds") ?? 0,
-    };
+  sameBlock: boolean = false;
+  setSameBlock = (v: boolean) => (this.sameBlock = v);
+  checkIfSameBlock = async () => {
+    const { furnace } = this;
+    if (furnace?.lastBurn == null) {
+      this.setSameBlock(false);
+      return;
+    }
+    const { height } = await nodeRequest("/blocks/height");
+    this.setSameBlock(height === furnace.lastBurn);
   };
 
-  createFurnace = async () => {
-    const programID = new PublicKey(DAPP);
-    const provider = this.rootStore.accountStore.provider;
-    const accountPublicKey =
-      this.rootStore.accountStore.solanaWeb3Manager.state.wallet?.publicKey;
-    if (provider == null || accountPublicKey == null) return;
+  fetchFurnace = async () => {
+    const lastIdReq = `/addresses/data/${DAPP_ADDRESS}/global_furnacesAmount`;
+    const { value: id } = await nodeRequest(lastIdReq);
+    if (id == null) return;
+    const dataReq = `/addresses/data/${DAPP_ADDRESS}?matches=furnace_${id}_(.*)`;
+    const data: any[] = await nodeRequest(dataReq);
+    if (data.length === 0) return;
 
-    const program = new Program(IDL, programID, provider);
-    const furnace = web3.Keypair.generate();
-    // console.log({ furnace });
-    console.log(furnace.publicKey.toString());
-    const [rewardVault] = await web3.PublicKey.findProgramAddress(
-      [Buffer.from("reward_vault"), furnace.publicKey.toBuffer()],
-      program.programId
-    );
-
-    const [furnaceAuthority] = await web3.PublicKey.findProgramAddress(
-      [Buffer.from("furnace"), furnace.publicKey.toBuffer()],
-      program.programId
-    );
-
-    const rewardFrom = await getAssociatedTokenAddress(
-      new PublicKey(TOKENS_BY_SYMBOL.USDT.assetId),
-      accountPublicKey,
-      true
-    );
-
-    // const rewardAmount = new BN(500).mul(
-    //   new BN(10).pow(new BN(TOKENS_BY_SYMBOL.USDT.decimals))
-    // );
-
-    const lifetime = new BN(
-      (LIFETIME * 60 * 1000) / SLOT_TIME[this.rootStore.accountStore.network]
-    );
-
-    await program.methods
-      .createFurnace(REWARD_AMOUNT, lifetime)
-      .accounts({
-        furnace: furnace.publicKey, // ✅ - это адрес печки, сохраняем его на бекенде
-        furnaceAuthority, // это адрес, на котором лежит authority печи
-        coalMint: new PublicKey(TOKENS_BY_SYMBOL.NAZI.assetId), // токен, который сжигаем
-        rewardMint: new PublicKey(TOKENS_BY_SYMBOL.USDT.assetId), // токен, в котором награда,
-        rewardVault, // это адрес на котором харанятся токены награды
-        rewardFrom, //адрес акаунта на котором лежат токены у создателя печи.
-      })
-      .signers([furnace])
-      .rpc();
-    await new Promise((r) => setTimeout(r, 1));
-    return furnace.publicKey.toString();
+    const finished = getValueByKey<boolean>(data, `furnace_${id}_finished`);
+    const lastBurn = getValueByKey<number>(data, `furnace_${id}_lastBurn`);
+    const lastStoker = getValueByKey<string>(data, `furnace_${id}_lastStoker`);
+    const lifetime = getValueByKey<number>(data, `furnace_${id}_lifetime`);
+    const rewardAmount = getValueByKey(data, `furnace_${id}_rewardAmount`);
+    const rewardAssetId = getValueByKey(data, `furnace_${id}_rewardAssetId`);
+    let lastBurnDate;
+    let finishDate;
+    let lastBurnBlockId;
+    if (lastBurn != null) {
+      const req = `/blocks/at/${lastBurn}`;
+      const { timestamp, id: blockId } = await nodeRequest(req);
+      lastBurnBlockId = blockId;
+      lastBurnDate = dayjs(timestamp);
+    }
+    if (lastBurnDate != null && lifetime != null && lastBurnBlockId) {
+      const req = `/blocks/delay/${lastBurnBlockId}/${lifetime}`;
+      const { delay } = await nodeRequest(req);
+      finishDate = lastBurnDate.add(lifetime * delay, "milliseconds");
+    }
+    this.setFurnace({
+      id,
+      finished,
+      lastBurn,
+      lastStoker,
+      lifetime: lifetime as number,
+      rewardAmount: rewardAmount as number,
+      rewardToken: TOKENS_BY_ASSET_ID[rewardAssetId as string],
+      lastBurnDate,
+      finishDate,
+    });
   };
+
+  get isLeader() {
+    return (
+      this.furnace != null &&
+      this.rootStore.accountStore.address &&
+      this.furnace.lastStoker === this.rootStore.accountStore.address
+    );
+  }
+
+  get isTimeOver() {
+    return (
+      !this.loading &&
+      this.furnace != null &&
+      this.furnace.finishDate != null &&
+      this.furnace.lastBurn != null &&
+      this.furnace.finishDate.isBefore(dayjs())
+    );
+  }
+
+  burn = async () => {
+    if (this.furnace == null) return;
+    await this.rootStore.accountStore.invoke({
+      dApp: DAPP_ADDRESS,
+      payment: [{ assetId: TOKENS_BY_SYMBOL.NAZI.assetId, amount: "1" }],
+      call: {
+        function: "burn",
+        args: [{ type: "string", value: this.furnace.id.toString() }],
+      },
+    });
+    await this.fetchFurnace();
+  };
+
+  claim = async () => {
+    if (this.furnace == null) return;
+    await this.rootStore.accountStore.invoke({
+      dApp: DAPP_ADDRESS,
+      payment: [],
+      call: {
+        function: "claim",
+        args: [{ type: "string", value: this.furnace.id.toString() }],
+      },
+    });
+    await this.fetchFurnace();
+  };
+
+  sync = () => Promise.all([this.checkIfSameBlock(), this.fetchFurnace()]);
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
-    // setInterval(this.fetchFurnace, 30 * 1000);
+    this.sync();
+    setInterval(this.sync, 10 * 1000);
     // when(() => rootStore.accountStore.provider != null, this.fetchFurnace);
   }
 }
