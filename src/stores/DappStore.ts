@@ -68,11 +68,10 @@ class DappStore {
     const lifetime = getValueByKey<number>(data, `furnace_${id}_lifetime`);
     const rewardAmount = getValueByKey(data, `furnace_${id}_rewardAmount`);
     const rewardAssetId = getValueByKey(data, `furnace_${id}_rewardAssetId`);
-    const { height } = await nodeRequest("/blocks/height");
     const lastBlock = await nodeRequest("/blocks/last");
     const { delay } = await nodeRequest(`/blocks/delay/${lastBlock.id}/1500`);
     const blocksBeforeEnd =
-      lastBurn != null ? lastBurn + lifetime! - height : null;
+      lastBurn != null ? lastBurn + lifetime! - lastBlock.height : null;
     const finishDate =
       blocksBeforeEnd != null
         ? dayjs(lastBlock.timestamp).add(
