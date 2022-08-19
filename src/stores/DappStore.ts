@@ -121,7 +121,10 @@ class DappStore {
         args: [{ type: "string", value: this.furnace.id.toString() }],
       },
     });
-    await this.fetchFurnace();
+    await Promise.all([
+      this.fetchFurnace(),
+      this.rootStore.accountStore.fetchNaziBalance(),
+    ]);
   };
 
   claim = async () => {
