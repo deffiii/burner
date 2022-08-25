@@ -10,6 +10,7 @@ import { useStores } from "@stores";
 import Tooltip from "@components/Tooltip";
 import arrowIcon from "@src/assets/icons/arrowRightBorderless.svg";
 import WalletActionsTooltip from "@components/Wallet/WalletActionsTooltip";
+import Button from "@components/Button";
 
 interface IProps {}
 
@@ -29,21 +30,11 @@ const Root = styled(Row)`
   }
 `;
 
-const AddressContainer = styled.div<{ expanded: boolean }>`
+const AddressContainer = styled(Button)<{ expanded: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
   box-sizing: border-box;
-  border-radius: 20px;
-  padding: 8px 8px 8px 8px;
-  cursor: pointer;
-  background-color: #f090b4;
-
-  :hover {
-    //background: #f1f2fe;
-  }
-
   .avatar {
     transition: 0.4s;
     width: 24px;
@@ -75,9 +66,9 @@ const LoggedInAccountInfo: React.FC<IProps> = () => {
         }}
         content={<WalletActionsTooltip />}
       >
-        <AddressContainer expanded={accountOpened}>
+        <AddressContainer expanded={accountOpened} size="medium">
           <img className="avatar" src={avatar!} alt="avatar" />
-          <Text>{centerEllipsis(address ?? "", 10)}</Text>
+          <span>{centerEllipsis(address ?? "", 10)}</span>
           <SizedBox width={10} />
           <img src={arrowIcon} className="menu-arrow" alt="arrow" />
         </AddressContainer>

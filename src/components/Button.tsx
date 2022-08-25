@@ -6,11 +6,12 @@ const Button = styled.button<{
   size?: TButtonSize;
   fixed?: boolean;
 }>`
+  transition: 0.4s;
   background: #f090b4;
   color: #000 !important;
   border-radius: 32px;
   white-space: nowrap;
-  border: none;
+  border: 2px solid transparent;
   outline: none;
   ${({ size }) =>
     (() => {
@@ -25,6 +26,7 @@ const Button = styled.button<{
     })()}
   :hover {
     cursor: pointer;
+    border: 2px solid #000;
   }
 
   :disabled {

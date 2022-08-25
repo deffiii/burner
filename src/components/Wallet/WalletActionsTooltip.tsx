@@ -14,7 +14,7 @@ interface IProps {}
 
 const Root = styled(Column)`
   .menu-item {
-    padding: 10px 0;
+    padding: 5px 0;
     cursor: pointer;
 
     :first-of-type {

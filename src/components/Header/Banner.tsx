@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { ReactComponent as CloseIcon } from "@src/assets/icons/close.svg";
+import { ROUTES } from "@stores/RootStore";
+import { Link } from "react-router-dom";
 
 interface IProps {
   closed: boolean;
@@ -49,7 +51,7 @@ const BoldText = styled.div`
   font-weight: 500;
   color: #ffffff;
   padding: 0;
-
+  cursor: pointer;
   :hover {
     color: #c6c9f4;
   }
@@ -58,7 +60,9 @@ const BoldText = styled.div`
 const Banner: React.FC<IProps> = ({ closed, setClosed }) => {
   return (
     <Root closed={closed}>
-      <BoldText>🔥 Burn the nazi save the world!</BoldText>
+      <Link to={ROUTES.GAME}>
+        <BoldText>🔥 Burn the nazi save the world!</BoldText>
+      </Link>
       <CloseIcon className="close" onClick={() => setClosed(true)} />
     </Root>
   );
