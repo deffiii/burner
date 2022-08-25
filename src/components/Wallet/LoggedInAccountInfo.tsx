@@ -2,12 +2,10 @@ import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { Row } from "@components/Flex";
 import SizedBox from "@components/SizedBox";
-import centerEllipsis from "@src/utils/centerEllipsis";
 import * as identityImg from "identity-img";
 import { observer } from "mobx-react-lite";
 import { useStores } from "@stores";
 import Tooltip from "@components/Tooltip";
-import arrowIcon from "@src/assets/icons/arrowRightBorderless.svg";
 import WalletActionsTooltip from "@components/Wallet/WalletActionsTooltip";
 import Button from "@components/Button";
 

@@ -2,7 +2,6 @@ import React from "react";
 import { useStores } from "@stores";
 import styled from "@emotion/styled";
 import { observer } from "mobx-react-lite";
-import { TOKENS_BY_SYMBOL } from "@src/tokens";
 import { toast } from "react-toastify";
 
 const Button = styled.button`
