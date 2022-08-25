@@ -9,8 +9,12 @@ const Jew = styled.img<{ pos?: boolean }>`
   right: -5px;
   transform: ${({ pos }) => (pos ? "scaleX(-1)" : "scaleX(1)")};
   bottom: -2px;
+  width: auto;
+  max-height: 150px;
   @media (min-width: 880px) {
     top: 20px;
+    max-height: 360px;
+    right: 48px;
   }
 `;
 

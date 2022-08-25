@@ -104,6 +104,15 @@ const NaziCards: React.FC<IProps> = () => {
     { src: n4, smallTop: 1.5, top: 20, left: 0.95 },
     { src: n5, smallTop: 1.5, top: 50, left: 0.95 },
   ];
+
+  const nextLotteryDate = (dayjs() as any)
+    .tz("Europe/Moscow")
+    .set("hours", 12)
+    .set("minutes", 0)
+    .set("seconds", 0)
+    .set("milliseconds", 0)
+    .weekday(dayjs().day() > 3 ? 10 : 3)
+    .toDate();
   return (
     <Root>
       <Block>
@@ -146,16 +155,7 @@ const NaziCards: React.FC<IProps> = () => {
         <Column alignItems="center" crossAxisSize="max">
           <SizedBox height={8} />
           <Subtitle style={{ zIndex: 1 }}>
-            <CustomCountdown
-              date={(dayjs() as any)
-                .tz("Europe/Moscow")
-                .set("hours", 12)
-                .set("minutes", 0)
-                .set("seconds", 0)
-                .set("milliseconds", 0)
-                .weekday(dayjs().day() > 3 ? 10 : 3)
-                .toDate()}
-            />
+            <CustomCountdown date={nextLotteryDate} />
           </Subtitle>
           <SizedBox height={10} />
           <Row alignItems="center">
