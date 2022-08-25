@@ -1,12 +1,11 @@
 export const EXPLORER_URL = "https://new.wavesexplorer.com";
 
-export const DAPP_ADDRESS = "3MxbD7vwyGjwsRxT8fmMB9fngo59VfHcrea";
-export const NAZI_MINT_ADDRESS = "3MxZPzVdHQYNjp99N7VRuR4RLmJUqnDg9ok";
+export const DAPP_ADDRESS = "3PLVYQ5F5C7G11VZ3MoZq4rh4dask2MYkhy";
+export const NAZI_MINT_ADDRESS = "3P8tB9EDqnGSzimEKGrEfpZyh9fu5cEG3va";
 export const NODES = [
-  "https://nodes-testnet.wavesnodes.com",
-  // "https://nodes-puzzle.wavesnodes.com",
-  // "https://wavesducks.wavesnodes.com",
-  // "https://nodes.swop.fi",
-  // "https://nodes.wavesnodes.com",
+  "https://wavesducks.wavesnodes.com",
+  "https://nodes.swop.fi",
+  "https://nodes-puzzle.wavesnodes.com",
+  "https://nodes.wavesnodes.com",
 ];
 export const NODE_URL = NODES[0];

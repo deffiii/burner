@@ -3,6 +3,7 @@ import React from "react";
 import Text from "@components/Text";
 import SizedBox from "@components/SizedBox";
 import { Column } from "@components/Flex";
+import { Anchor } from "@components/Anchor";
 
 interface IProps {}
 
@@ -48,7 +49,7 @@ const Rules: React.FC<IProps> = () => {
   const rules = [
     {
       title: "Buy Tickets",
-      text: "Each ticket is your chance to win. To buy it, connect your Phantom wallet. You can buy tickets for USDT and SOL. The date and time of start are written on the main page.",
+      text: "Each ticket is your chance to win. To buy it, connect your wallet. You can buy ticket for 5 USDT. The date and time of start are written on the main page.",
     },
     {
       title: "Keep track of time",
@@ -56,7 +57,7 @@ const Rules: React.FC<IProps> = () => {
     },
     {
       title: "Burn the ticket",
-      text: "When participants burn the ticket, timer resets back to 20 minutes. The participant on whose turn the time runs out wins the lottery.",
+      text: "When participants burn the ticket, timer resets back to 20 minutes. The participant on whose turn the time runs out wins the lottery.\n",
     },
   ];
   return (
@@ -92,11 +93,41 @@ const Rules: React.FC<IProps> = () => {
           textAlign="center"
           style={{ maxWidth: 858 }}
         >
-          Any participant can create a lottery. To do this, he can make a
-          deposit with the required amount and lock the prize fund in smart
-          contract. After that, he sets the date and time for the start of the
-          lottery. When the deposit is received in the smart contract, the
-          lottery appears on the main page. In progress.
+          Now the prize fund is formed by the Naziburner team. We block the
+          deposit in the smart contract and set the date for the launch of the
+          lottery. After that, the contract works completely decentralized.
+          Later we will add a feature so that any user can create their own
+          lottery with their own prize pool and start date. Follow the news in
+          &nbsp;
+          <Anchor
+            style={{ color: "#000", textDecoration: "underline" }}
+            href="https://t.me/NAZIBURNER"
+          >
+            our Telegram community
+          </Anchor>
+          .
+        </Text>
+      </Column>
+      <SizedBox height={48} />
+      <Column alignItems="center" crossAxisSize={"max"}>
+        <Text size="big" weight={600} fitContent>
+          Important
+        </Text>
+        <SizedBox height={16} />
+        <Text
+          type="secondary"
+          size="medium"
+          weight={400}
+          textAlign="center"
+          style={{ maxWidth: 858 }}
+        >
+          Naziburner is a decentralized lottery based on the Waves blockchain.
+          The countdown time is measured in blocks. Each block is closed on
+          average in 60 seconds, but there may be a small calculation error.
+          Additionally, you’ll need to confirm the transaction and pay the gas
+          fee in WAVES. This may take some time. Also, you need to have some
+          Waves on your wallet balance to pay gas fees. Remember this when
+          choosing a moment to burn your ticket.
         </Text>
       </Column>
     </Root>

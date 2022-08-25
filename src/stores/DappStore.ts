@@ -1,7 +1,6 @@
 import RootStore from "@stores/RootStore";
 import { makeAutoObservable } from "mobx";
 import { IToken, TOKENS_BY_ASSET_ID, TOKENS_BY_SYMBOL } from "@src/tokens";
-// import { SLOT_TIME } from "@stores/AccountStore";
 import nodeRequest from "@src/utils/nodeRequest";
 import { DAPP_ADDRESS, NAZI_MINT_ADDRESS } from "@src/constants";
 import dayjs, { Dayjs } from "dayjs";
@@ -72,6 +71,7 @@ class DappStore {
     const { delay } = await nodeRequest(`/blocks/delay/${lastBlock.id}/1500`);
     const blocksBeforeEnd =
       lastBurn != null ? lastBurn + lifetime! - lastBlock.height : null;
+    // console.log(blocksBeforeEnd);
     const finishDate =
       blocksBeforeEnd != null
         ? dayjs(lastBlock.timestamp).add(

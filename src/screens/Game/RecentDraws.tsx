@@ -30,8 +30,6 @@ import InteractButton from "@screens/Game/InteractButton";
 import CoalCard from "@screens/Game/CoalCard";
 import Spinner from "@components/Spinner";
 import Button from "@components/Button";
-import { Anchor } from "@components/Anchor";
-import { TICKETS_MINT_URL } from "@stores/RootStore";
 
 interface IProps {}
 
@@ -69,11 +67,11 @@ const naziIcons = [
   s9,
   s8,
   s7,
-  s6,
   s5,
   s4,
   s3,
   s2,
+  s6,
   s1,
 ];
 
@@ -125,9 +123,9 @@ const RecentDraws: React.FC<IProps> = () => {
                 : "Want to buy more NAZI?"}
             </Text>
             <SizedBox height={24} />
-            <Anchor href={TICKETS_MINT_URL}>
-              <Button size="medium">🎫 Buy $NAZI</Button>
-            </Anchor>
+            <Button size="medium" onClick={dappStore.mintNazi}>
+              🎫 Buy $NAZI
+            </Button>
           </CoalCard>
         )}
       </Container>
