@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/static/css/main.629338ce.css",
-    "main.js": "/static/js/main.085d3337.js",
+    "main.js": "/static/js/main.f5323a19.js",
     "static/js/787.729a739a.chunk.js": "/static/js/787.729a739a.chunk.js",
+    "static/media/jew1.png": "/static/media/jew1.c4d0a44aa52398fc6e72.png",
     "static/media/s11.png": "/static/media/s11.fa6762da686beafe91c0.png",
     "static/media/s2.png": "/static/media/s2.c19d3770850fc49c5192.png",
     "static/media/s1.png": "/static/media/s1.4165eb2a83de0a8bc863.png",
-    "static/media/jew1.png": "/static/media/jew1.e99abfa4bdcb8573f90c.png",
     "static/media/s17.png": "/static/media/s17.1697b286a043de91b2ff.png",
     "static/media/s18.png": "/static/media/s18.cf5d6afe1e867309e521.png",
     "static/media/s9.png": "/static/media/s9.535a3b5ea3c3e9869313.png",
@@ -16,6 +16,7 @@
     "static/media/s4.png": "/static/media/s4.5e72af1fdf720a3a734f.png",
     "static/media/s12.png": "/static/media/s12.009b7763cb1926db8767.png",
     "static/media/s3.png": "/static/media/s3.058b5feebcffe458ee4c.png",
+    "static/media/jew2.png": "/static/media/jew2.3714e3494c8bc27412f1.png",
     "static/media/s6.png": "/static/media/s6.348cbeebcd56958fad27.png",
     "static/media/s5.png": "/static/media/s5.dbe4088a67cebf148d43.png",
     "static/media/s10.png": "/static/media/s10.d062a939827f616c691b.png",
@@ -25,13 +26,12 @@
     "static/media/s16.png": "/static/media/s16.574f3a22d901cd6748de.png",
     "static/media/s14.png": "/static/media/s14.069c6cfc3da1fc62d761.png",
     "static/media/empty.png": "/static/media/empty.0d9fef8fe80d3526b947.png",
-    "static/media/jew2.png": "/static/media/jew2.a3c63f16fb06799439ab.png",
+    "static/media/jew3.png": "/static/media/jew3.cb3f2ef4198b74ba6049.png",
     "static/media/n4.png": "/static/media/n4.819f9a3ec9c6eb60884e.png",
     "static/media/n1.png": "/static/media/n1.903f059e083f87eff9b0.png",
     "static/media/n2.png": "/static/media/n2.7ee1bfb4a1915b5bb151.png",
     "static/media/n5.png": "/static/media/n5.7b09fd9c4ccaaba3c965.png",
     "static/media/n3.png": "/static/media/n3.79d48f6a178eb17df6b5.png",
-    "static/media/jew3.png": "/static/media/jew3.a273162bb22a0b78e465.png",
     "static/media/fire.gif": "/static/media/fire.826f469e553cda49706e.gif",
     "static/media/logo.svg": "/static/media/logo.93e5ae0c92919487b0ade43b2e7d7f11.svg",
     "static/media/coins.svg": "/static/media/coins.46d704078188114e6be38c263fa8a39a.svg",
@@ -44,11 +44,11 @@
     "static/media/keeper.svg": "/static/media/keeper.334d7e89a8607ede04dbc6bd2914affe.svg",
     "static/media/close.svg": "/static/media/close.ee83cac40e10f3230597115d76b3a9f2.svg",
     "main.629338ce.css.map": "/static/css/main.629338ce.css.map",
-    "main.085d3337.js.map": "/static/js/main.085d3337.js.map",
+    "main.f5323a19.js.map": "/static/js/main.f5323a19.js.map",
     "787.729a739a.chunk.js.map": "/static/js/787.729a739a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.629338ce.css",
-    "static/js/main.085d3337.js"
+    "static/js/main.f5323a19.js"
   ]
 }
