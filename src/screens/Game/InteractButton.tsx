@@ -23,8 +23,6 @@ const Button = styled.button`
 const InteractButton = () => {
   const { accountStore, dappStore } = useStores();
   const furnace = dappStore.furnace;
-  const balance: number | null =
-    accountStore.balances[TOKENS_BY_SYMBOL.NAZI.assetId]?.toNumber();
   const burn = () => {
     dappStore.setBurnLoading(true);
     dappStore
@@ -39,8 +37,7 @@ const InteractButton = () => {
       .catch((e) => toast.error(e.message ?? e.toString()))
       .finally(() => dappStore.setClaimLoading(false));
   };
-
-  if (furnace == null || furnace.finished || balance === 0) return null;
+  if (furnace == null || furnace.finished) return null;
   if (dappStore.loading || accountStore.balanceLoading) {
     return <Button disabled>Loading...</Button>;
   }

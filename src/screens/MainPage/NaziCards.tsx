@@ -4,13 +4,8 @@ import Text from "@src/components/Text";
 import React from "react";
 import Button from "@components/Button";
 import SizedBox from "@components/SizedBox";
-import n1 from "@src/assets/n1.png";
-import n2 from "@src/assets/n2.png";
-import n3 from "@src/assets/n3.png";
-import n4 from "@src/assets/n4.png";
-import n5 from "@src/assets/n5.png";
+import naziTeam from "@src/assets/naziGroup.png";
 import useWindowSize from "@src/hooks/useWindowSize";
-import useElementSize from "@src/hooks/useElementSize";
 import { observer } from "mobx-react-lite";
 import clock from "@src/assets/icons/clock.svg";
 import CustomCountdown from "@components/CustomCountdown";
@@ -38,25 +33,6 @@ const Root = styled.div`
     display: grid;
     grid-template-columns: 2fr 1fr;
   }
-`;
-const CardsContainer = styled(Row)`
-  position: relative;
-  min-height: 154px;
-  align-items: center;
-  @media (min-width: 880px) {
-    padding: 70px 0;
-  }
-  overflow-y: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-const Img = styled.img`
-  position: absolute;
-  width: 145px;
 `;
 
 const Title = styled(Text)`
@@ -93,17 +69,23 @@ const Block = styled.div`
     //flex-direction: column;
   }
 `;
+
+const NaziTeamImg = styled.img`
+  max-width: calc(100vw - 32px);
+  @media (min-width: 880px) {
+    max-width: 450px;
+  }
+  @media (min-width: 980px) {
+    max-width: 530px;
+  }
+  @media (min-width: 1170px) {
+    max-width: 730px;
+  }
+`;
+
 const NaziCards: React.FC<IProps> = () => {
   const { dappStore } = useStores();
   const { width: windowWidth } = useWindowSize();
-  const [squareRef, { width }] = useElementSize();
-  const cards = [
-    { src: n1, smallTop: 1.5, top: 43, left: 1 },
-    { src: n2, smallTop: 1.5, top: 20, left: 0.7 },
-    { src: n3, smallTop: 1.5, top: 50, left: 1 },
-    { src: n4, smallTop: 1.5, top: 20, left: 0.95 },
-    { src: n5, smallTop: 1.5, top: 50, left: 0.95 },
-  ];
 
   const nextLotteryDate = (dayjs() as any)
     .tz("Europe/Moscow")
@@ -122,36 +104,14 @@ const NaziCards: React.FC<IProps> = () => {
             <SizedBox height={6} />
           </Column>
         </Layout>
-        <Row>
-          <CardsContainer ref={squareRef}>
-            {windowWidth && windowWidth >= 880
-              ? cards.map((v, index) => (
-                  <Img
-                    key={index}
-                    src={v.src}
-                    style={{
-                      zIndex: 2,
-                      left: `${(width / 5) * index * 0.95}px`,
-                      top: `${v.top}px`,
-                    }}
-                  />
-                ))
-              : cards.map((v, index) => (
-                  <Img
-                    key={index}
-                    src={v.src}
-                    style={{
-                      zIndex: 2,
-                      left: `${(width / 5) * index}px`,
-                      height: 115,
-                      width: "auto",
-                    }}
-                  />
-                ))}
-          </CardsContainer>
-        </Row>
+        <NaziTeamImg src={naziTeam} />
       </Block>
-      <Layout style={{ background: "transparent", width: 400 }}>
+      <Layout
+        style={{
+          background: "transparent",
+          width: windowWidth && windowWidth >= 880 ? 400 : "auto",
+        }}
+      >
         <Column alignItems="center" crossAxisSize="max">
           <SizedBox height={8} />
           <Subtitle style={{ zIndex: 1 }}>

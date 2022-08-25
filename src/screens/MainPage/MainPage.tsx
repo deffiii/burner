@@ -13,6 +13,7 @@ const Root = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
+  overflow-x: hidden;
 `;
 const Layout = styled.div`
   display: flex;

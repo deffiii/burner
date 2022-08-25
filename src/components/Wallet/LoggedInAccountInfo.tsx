@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { Row } from "@components/Flex";
 import SizedBox from "@components/SizedBox";
-import Text from "@components/Text";
 import centerEllipsis from "@src/utils/centerEllipsis";
 import * as identityImg from "identity-img";
 import { observer } from "mobx-react-lite";
@@ -68,9 +67,7 @@ const LoggedInAccountInfo: React.FC<IProps> = () => {
       >
         <AddressContainer expanded={accountOpened} size="medium">
           <img className="avatar" src={avatar!} alt="avatar" />
-          <span>{centerEllipsis(address ?? "", 10)}</span>
-          <SizedBox width={10} />
-          <img src={arrowIcon} className="menu-arrow" alt="arrow" />
+          <span>...{address?.slice(-3)}</span>
         </AddressContainer>
       </Tooltip>
     </Root>
