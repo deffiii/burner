@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.629338ce.css",
-    "main.js": "/static/js/main.8b208402.js",
+    "main.js": "/static/js/main.2062e090.js",
     "static/js/787.729a739a.chunk.js": "/static/js/787.729a739a.chunk.js",
     "static/media/naziGroup.png": "/static/media/naziGroup.c83d9112421a91301bde.png",
     "static/media/jew1.png": "/static/media/jew1.c4d0a44aa52398fc6e72.png",
@@ -27,6 +27,7 @@
     "static/media/s16.png": "/static/media/s16.574f3a22d901cd6748de.png",
     "static/media/s14.png": "/static/media/s14.069c6cfc3da1fc62d761.png",
     "static/media/empty.png": "/static/media/empty.0d9fef8fe80d3526b947.png",
+    "static/media/buyTockensBg.svg": "/static/media/buyTockensBg.eeaa6d5cda39a980aa53d3664926333b.svg",
     "static/media/jew3.png": "/static/media/jew3.cb3f2ef4198b74ba6049.png",
     "static/media/fire.gif": "/static/media/fire.826f469e553cda49706e.gif",
     "static/media/logo.svg": "/static/media/logo.93e5ae0c92919487b0ade43b2e7d7f11.svg",
@@ -39,11 +40,11 @@
     "static/media/keeper.svg": "/static/media/keeper.334d7e89a8607ede04dbc6bd2914affe.svg",
     "static/media/close.svg": "/static/media/close.1519c654d4660714834aeb7bdd9e954e.svg",
     "main.629338ce.css.map": "/static/css/main.629338ce.css.map",
-    "main.8b208402.js.map": "/static/js/main.8b208402.js.map",
+    "main.2062e090.js.map": "/static/js/main.2062e090.js.map",
     "787.729a739a.chunk.js.map": "/static/js/787.729a739a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.629338ce.css",
-    "static/js/main.8b208402.js"
+    "static/js/main.2062e090.js"
   ]
 }
