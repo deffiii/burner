@@ -6,6 +6,7 @@ import { DAPP_ADDRESS, NAZI_MINT_ADDRESS } from "@src/constants";
 import dayjs, { Dayjs } from "dayjs";
 import { Undefinable } from "tsdef";
 import { toast } from "react-toastify";
+import BN from "@src/utils/BN";
 
 export interface IFurnaceState {
   id: string;
@@ -35,6 +36,9 @@ class DappStore {
 
   burnLoading: boolean = false;
   setBurnLoading = (v: boolean) => (this.burnLoading = v);
+
+  buyModalOpened: boolean = false;
+  setBuyModalOpened = (v: boolean) => (this.buyModalOpened = v);
 
   get loading() {
     return this.claimLoading || this.burnLoading;
@@ -140,11 +144,19 @@ class DappStore {
     await this.fetchFurnace();
   };
 
-  mintNazi = async () => {
+  mintNazi = async (amount = 1) => {
     const txId = await this.rootStore.accountStore.invoke({
       dApp: NAZI_MINT_ADDRESS,
-      payment: [{ assetId: TOKENS_BY_SYMBOL.USDT.assetId, amount: "5000000" }],
-      call: { function: "mintNazi", args: [{ type: "integer", value: "1" }] },
+      payment: [
+        {
+          assetId: TOKENS_BY_SYMBOL.USDT.assetId,
+          amount: new BN(5000000).times(amount).toString(),
+        },
+      ],
+      call: {
+        function: "mintNazi",
+        args: [{ type: "integer", value: amount.toString() }],
+      },
     });
     await this.rootStore.accountStore.fetchNaziBalance();
     toast.success(txId);

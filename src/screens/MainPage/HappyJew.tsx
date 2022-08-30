@@ -62,6 +62,8 @@ const Block = styled(Column)`
     justify-content: flex-start;
   }
 `;
+
+//todo
 const HappyJew: React.FC<IProps> = () => {
   const { dappStore } = useStores();
   const { furnace } = dappStore;
@@ -71,21 +73,25 @@ const HappyJew: React.FC<IProps> = () => {
       <Block>
         {furnace && furnace.rewardToken ? (
           <Title weight={600}>
-            {BN.formatUnits(
-              furnace.rewardAmount,
-              furnace.rewardToken.decimals
-            ).toFormat(0)}{" "}
-            {furnace.rewardToken.symbol} Prize.
+            500 USDT Prize.
+            {/*{BN.formatUnits(*/}
+            {/*  furnace.rewardAmount,*/}
+            {/*  furnace.rewardToken.decimals*/}
+            {/*).toFormat(0)}{" "}*/}
+            {/*{furnace.rewardToken.symbol} Prize.*/}
           </Title>
         ) : (
           <Title weight={600}>Loading....</Title>
         )}
         <SizedBox height={24} />
-        {furnace != null && (
-          <Button size="big" onClick={() => navigate(ROUTES.GAME)}>
-            🔥 Play now
-          </Button>
-        )}
+        <Button size="big" onClick={() => dappStore.setBuyModalOpened(true)}>
+          Buy $NAZI
+        </Button>
+        {/*{furnace != null && (*/}
+        {/*  <Button size="big" onClick={() => navigate(ROUTES.GAME)}>*/}
+        {/*    🔥 Play now*/}
+        {/*  </Button>*/}
+        {/*)}*/}
       </Block>
       <Jew src={jew} alt="jew" />
     </Root>

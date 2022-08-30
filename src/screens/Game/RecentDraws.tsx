@@ -123,7 +123,10 @@ const RecentDraws: React.FC<IProps> = () => {
                 : "Want to buy more NAZI?"}
             </Text>
             <SizedBox height={24} />
-            <Button size="medium" onClick={dappStore.mintNazi}>
+            <Button
+              size="medium"
+              onClick={() => dappStore.setBuyModalOpened(true)}
+            >
               🎫 Buy $NAZI
             </Button>
           </CoalCard>

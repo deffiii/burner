@@ -87,13 +87,13 @@ const NaziCards: React.FC<IProps> = () => {
   const { dappStore } = useStores();
   const { width: windowWidth } = useWindowSize();
 
-  const nextLotteryDate = (dayjs() as any)
-    .tz("Europe/Moscow")
-    .set("hours", 12)
+  const nextLotteryDate = (dayjs("2022-09-02") as any)
+    .tz("Europe/London")
+    .set("hours", 16)
     .set("minutes", 0)
     .set("seconds", 0)
     .set("milliseconds", 0)
-    .weekday(dayjs().day() > 3 ? 10 : 3)
+    // .weekday(dayjs().day() > 3 ? 10 : 3)
     .toDate();
   return (
     <Root>
@@ -127,7 +127,9 @@ const NaziCards: React.FC<IProps> = () => {
           <Button
             style={{ width: "100%" }}
             size="big"
-            onClick={dappStore.mintNazi}
+            onClick={() => dappStore.setBuyModalOpened(true)}
+            //todo
+            // onClick={dappStore.mintNazi}
           >
             Buy $NAZI
           </Button>

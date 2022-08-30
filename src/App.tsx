@@ -9,6 +9,8 @@ import MainPage from "@screens/MainPage";
 import Game from "@screens/Game";
 import SizedBox from "@components/SizedBox";
 import { ToastContainer } from "react-toastify";
+import BuyTickets from "@screens/BuyTickets";
+import { useStores } from "@stores";
 
 const Root = styled(Column)`
   width: 100%;
@@ -26,6 +28,7 @@ const Body = styled(Column)`
 `;
 
 const App: FC = () => {
+  const { dappStore } = useStores();
   return (
     <Root>
       <Header />
@@ -37,6 +40,10 @@ const App: FC = () => {
           <Route path="*" element={<Navigate to={ROUTES.ROOT} />} />
         </Routes>
       </Body>
+      <BuyTickets
+        visible={dappStore.buyModalOpened}
+        onClose={() => dappStore.setBuyModalOpened(false)}
+      />
       <ToastContainer />
     </Root>
   );
