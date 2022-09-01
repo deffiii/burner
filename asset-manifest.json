@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.629338ce.css",
-    "main.js": "/static/js/main.2062e090.js",
+    "main.js": "/static/js/main.61f6737e.js",
     "static/js/787.729a739a.chunk.js": "/static/js/787.729a739a.chunk.js",
     "static/media/naziGroup.png": "/static/media/naziGroup.c83d9112421a91301bde.png",
     "static/media/jew1.png": "/static/media/jew1.c4d0a44aa52398fc6e72.png",
@@ -40,11 +40,11 @@
     "static/media/keeper.svg": "/static/media/keeper.334d7e89a8607ede04dbc6bd2914affe.svg",
     "static/media/close.svg": "/static/media/close.1519c654d4660714834aeb7bdd9e954e.svg",
     "main.629338ce.css.map": "/static/css/main.629338ce.css.map",
-    "main.2062e090.js.map": "/static/js/main.2062e090.js.map",
+    "main.61f6737e.js.map": "/static/js/main.61f6737e.js.map",
     "787.729a739a.chunk.js.map": "/static/js/787.729a739a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.629338ce.css",
-    "static/js/main.2062e090.js"
+    "static/js/main.61f6737e.js"
   ]
 }
