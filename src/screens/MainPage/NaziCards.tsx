@@ -87,7 +87,7 @@ const NaziCards: React.FC<IProps> = () => {
   const { dappStore } = useStores();
   const { width: windowWidth } = useWindowSize();
 
-  const nextLotteryDate = (dayjs("2022-09-04") as any)
+  const nextLotteryDate = (dayjs("2022-09-10") as any)
     .tz("Europe/London")
     .set("hours", 16)
     .set("minutes", 0)
